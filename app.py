@@ -1,6 +1,8 @@
 import streamlit as st
 import numpy as np
 import tensorflow as tf
+import os
+import gdown
 from PIL import Image
 import json
 
@@ -51,9 +53,16 @@ st.markdown(
 st.title("🌿 Plant Disease Prediction")
 
 # ---- Load model ----
+MODEL_PATH = "plant_disease_prediction_model.h5"
+
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model("plant_disease_prediction_model.h5")
+    if not os.path.exists(MODEL_PATH):
+        file_id = "1vgZYRkr6dzuUBC5XiwaxOtwPyU1fb_1H"
+        url = f"https://drive.google.com/uc?id={file_id}"
+        gdown.download(url, MODEL_PATH, quiet=False)
+
+    return tf.keras.models.load_model(MODEL_PATH)
 
 model = load_model()
 
